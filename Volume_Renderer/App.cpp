@@ -1,11 +1,13 @@
 #include "App.h"
 #include <iostream>
 
-App::App(int width, int height, std::string dataPath, bool isStereo) {
+App::App(int width, int height, std::string dataPath, bool isStereo, std::string vsPath, std::string fsPath) {
 	m_windowWidth = width;
 	m_windowHeight = height;
 	m_dataPath = dataPath;
 	m_isStereo = isStereo;
+	m_vertexShaderPath = vsPath;
+	m_fragmentShaderPath = fsPath;
 	if (!setup())
 		std::cerr << "Application setup failed" << std::endl;
 }
@@ -32,7 +34,7 @@ bool App::setup() {
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) return false;
 
 	m_input = new GLFWInput(m_window);
-	m_renderer = new Renderer();
+	m_renderer = new Renderer(m_vertexShaderPath, m_fragmentShaderPath);
 
 	sceneSetup();
 
