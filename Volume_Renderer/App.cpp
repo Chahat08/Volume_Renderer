@@ -45,8 +45,8 @@ bool App::setup() {
 
 	m_camera = new Camera();
 	m_shader = new Shader(m_vertexShaderPath, m_fragmentShaderPath);
-	m_input = new GLFWInput(m_window, m_camera,m_model);
 	m_model = new Model(m_dataPath);
+	m_input = new GLFWInput(m_window, m_camera, m_model);
 	m_renderer = new Renderer(m_shader, m_camera, m_model);
 
 	sceneSetup();

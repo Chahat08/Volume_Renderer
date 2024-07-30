@@ -1,14 +1,13 @@
 #include "Model.h"
-#include <iostream>
 
-Model::Model() :deltaTime(1.0f), m_modelMatrix(glm::mat4(1.0f)), m_rotateSpeed(1.0f) {}
-Model::Model(const std::string& dataPath) :deltaTime(1.0f), m_modelMatrix(glm::mat4(1.0f)), m_dataPath(dataPath), m_rotateSpeed(5.0f) {
-	std::cout << "here";
+Model::Model(const std::string& dataPath) :m_dataPath(dataPath){
+	deltaTime = 1.0f;
+	m_modelMatrix = glm::mat4(1.0f);
+	m_rotateSpeed = 0.0005f;
 }
 
 void Model::rotate(const glm::vec3& axis, float angle) {
-	m_modelMatrix = glm::rotate(m_modelMatrix, angle * 1.0f * 1.0f, axis);
-	std::cout << "here" << std::endl;
+	m_modelMatrix = glm::rotate(m_modelMatrix, angle * deltaTime * m_rotateSpeed, axis);
 }
 
 void Model::scaleUniform(float factor) {

@@ -5,7 +5,6 @@
 
 class Model {
 public:
-	Model();
 	Model(const std::string& dataPath);
 
 	void rotate(const glm::vec3& axis, float angle);
@@ -19,5 +18,4 @@ private:
 
 	glm::mat4 m_modelMatrix;
 	std::string m_dataPath;
-
 };

@@ -2,19 +2,11 @@
 #include <iostream>
 
 GLFWwindow* GLFWInput::m_window = nullptr;
-Camera* GLFWInput::m_camera = nullptr;
-Model* GLFWInput::m_model = nullptr;
 double GLFWInput::m_cursor_xpos = 0.0;
 double GLFWInput::m_cursor_ypos = 0.0;
 double GLFWInput::m_init_xpos = 0.0;
 double GLFWInput::m_init_ypos = 0.0;
 bool GLFWInput::m_modelRotate = false;
-
-//void cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
-//	GLFWInput::m_cursor_xpos = xpos;
-//	GLFWInput::m_cursor_ypos = ypos;
-//	//glfwGetCursorPos(GLFWInput::m_window, &GLFWInput::m_cursor_xpos, &GLFWInput::m_cursor_ypos);
-//}
 
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
 	// MODEL ROTATION
@@ -32,11 +24,8 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 
 }
 
-GLFWInput::GLFWInput(GLFWwindow* window, Camera* camera, Model* model) {
+GLFWInput::GLFWInput(GLFWwindow* window, Camera* camera, Model* model):m_camera(camera), m_model(model) {
 	m_window = window;
-	m_camera = camera;
-	m_model = model;
-	// glfwSetCursorPosCallback(m_window, cursor_position_callback);
 	glfwSetMouseButtonCallback(m_window, mouse_button_callback);
 }
 
