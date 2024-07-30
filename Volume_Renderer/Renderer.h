@@ -22,10 +22,5 @@ private:
 	Camera* m_camera;
 	Model* m_model;
 
-	GLfloat m_vertexData[18];
-	GLuint m_vbo, m_vao;
-
 	glm::mat4 m_projection;
-	
-	void vertexDataSetup();
 };

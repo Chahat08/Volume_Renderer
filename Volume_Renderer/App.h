@@ -26,5 +26,4 @@ private:
 	Renderer* m_renderer;
 
 	bool setup();
-	void sceneSetup();
 };

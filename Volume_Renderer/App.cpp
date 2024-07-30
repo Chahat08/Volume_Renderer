@@ -49,13 +49,7 @@ bool App::setup() {
 	m_input = new GLFWInput(m_window, m_camera, m_model);
 	m_renderer = new Renderer(m_shader, m_camera, m_model);
 
-	sceneSetup();
-
 	return true;
-}
-
-void App::sceneSetup() {
-	m_renderer->setClearColor(0.11, 0.004, 0.106);
 }
 
 void App::run() {
