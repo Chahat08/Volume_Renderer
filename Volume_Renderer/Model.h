@@ -15,14 +15,16 @@ public:
 
 	glm::mat4 getModelMatrix();
 	GLuint getVertexArray();
+	int getNumTriangles();
 private:
 	float m_rotateSpeed;
 
 	glm::mat4 m_modelMatrix;
 	std::string m_dataPath;
 
-	GLfloat m_vertexData[18];
+	GLfloat m_vertexData[36];
 	GLuint m_vbo, m_vao;
+	int m_numTriangles;
 
 	void readTextures();
 	void vertexDataSetup();

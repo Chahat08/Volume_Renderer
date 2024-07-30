@@ -6,8 +6,9 @@ Renderer::Renderer(Shader* shader, Camera* camera, Model* model){
 	m_shader = shader;
 	m_camera = camera;
 	m_model = model;
-
-	m_projection = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f);
+	
+	//m_projection = glm::perspective(glm::radians(45.0f), (float)m_width / m_height, 0.1f, 100.0f);
+	m_projection = glm::ortho(-2.0f, 2.0f, -2.0f, 2.0f, -2.0f, 2.0f);
 	setClearColor(0.11, 0.004, 0.106);
 }
 
@@ -21,7 +22,7 @@ void Renderer::processFrame() {
 	m_shader->setUniform("model", m_model->getModelMatrix());
 
 	glBindVertexArray(m_model->getVertexArray());
-	glDrawArrays(GL_TRIANGLES, 0, 3);
+	glDrawArrays(GL_TRIANGLES, 0, 3 * m_model->getNumTriangles());
 }
 
 void Renderer::setClearColor(float r, float g, float b) {
