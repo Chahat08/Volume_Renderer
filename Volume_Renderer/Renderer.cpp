@@ -3,9 +3,19 @@
 #include <GLFW/glfw3.h>
 #include <vector>
 
-Renderer::Renderer(const std::string& vertexShaderPath, const std::string& fragmentShaderPath){
+Renderer::Renderer(Shader* shader, Camera* camera, Model* model){
+	vertexDataSetup();
+
+	m_shader = shader;
+	m_camera = camera;
+	m_model = model;
+
+	m_projection = glm::perspective(glm::radians(45.0f), (float)m_width / m_height, 0.1f, 100.0f);
+}
+
+void Renderer::vertexDataSetup() {
 	std::vector<GLfloat> vertexVals = { 0.0, 0.8,0.0,	1.0,0.0,0.0,
-										0.7,-0.2,0.0,	0.0,1.0,0.0, 
+										0.7,-0.2,0.0,	0.0,1.0,0.0,
 									   -0.7,-0.2,0.0,	0.0,0.0,1.0, };
 
 	for (int i = 0; i < vertexVals.size(); ++i)
@@ -21,10 +31,8 @@ Renderer::Renderer(const std::string& vertexShaderPath, const std::string& fragm
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)0);
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(3*sizeof(GLfloat)));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(1);
-
-	m_shader = new Shader(vertexShaderPath, fragmentShaderPath);
 }
 
 void Renderer::processFrame() {
@@ -32,6 +40,9 @@ void Renderer::processFrame() {
 	glClearColor(clearColor.r, clearColor.g, clearColor.b, 1.0);
 
 	m_shader->useProgram();
+	m_shader->setUniform("projection", m_projection);
+	m_shader->setUniform("view", m_camera->getLookAt());
+	m_shader->setUniform("model", m_model->getModelMatrix());
 
 	glBindVertexArray(m_vao);
 	glDrawArrays(GL_TRIANGLES, 0, 3);

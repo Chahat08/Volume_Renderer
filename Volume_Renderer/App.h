@@ -8,6 +8,7 @@
 class App {
 public:
 	App(int height, int width, std::string dataPath, bool isStereo, std::string vertexShaderPath, std::string fragmentShaderPath);
+	~App();
 
 	void run();
 
@@ -19,9 +20,11 @@ private:
 
 	GLFWwindow* m_window;
 	GLFWInput* m_input;
+	Camera* m_camera;
+	Model* m_model;
+	Shader* m_shader;
 	Renderer* m_renderer;
 
 	bool setup();
 	void sceneSetup();
-	void terminate();
 };

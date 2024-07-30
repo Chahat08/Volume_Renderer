@@ -1,6 +1,7 @@
 #include "Shader.h"
 #include <fstream>
 #include <sstream>
+#include <type_traits>
 
 std::string readFile(const std::string& filePath) {
 	std::ifstream file(filePath, std::ios::in);
@@ -36,6 +37,11 @@ Shader::Shader(const std::string& vsPath, const std::string& fsPath) {
 	glDeleteShader(m_fragmentShader);
 }
 
+Shader::~Shader() {
+	glDeleteProgram(m_program);
+}
+
 void Shader::useProgram() {
 	glUseProgram(m_program);
 }
+
