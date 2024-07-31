@@ -39,7 +39,6 @@ void Model::initializeTextures() {
 		unsigned char* data = readTextureSlice(file, STANFORD, 256, 256);
 
 		glBindTexture(GL_TEXTURE_2D, m_textureIds[i]);
-		//glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
