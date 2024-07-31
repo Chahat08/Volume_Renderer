@@ -17,12 +17,10 @@ void main() {
 
     vec4 texColor = vec4(intensity, intensity, intensity, intensity);
 
-	//if(texColor.a<0.1) discard;
-	//fragmentColor = texColor;
-
+	//vec4 finalColor = texColor;
 	vec4 finalColor = mix(texColor * brightness, 
       mix(averageLuminance, texColor, contrast), 0.5);
-	  if(finalColor.a<0.05) discard;
+	if(finalColor.a<0.05) discard;
 	fragmentColor = finalColor;
 
 	//fragmentColor = texture(textureSampler, textureCoords);

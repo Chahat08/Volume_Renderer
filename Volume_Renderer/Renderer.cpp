@@ -2,24 +2,30 @@
 #include <GLFW/glfw3.h>
 #include <vector>
 
+#ifdef GL_EXT_blend_minmax
+glEnable(GL_BLEND);
+glBlendEquationEXT(GL_MAX_EXT);
+glBlendFunc(GL_SRC_COLOR, GL_DST_COLOR);
+#endif
+
 Renderer::Renderer(Shader* shader, Camera* camera, Model* model){
 	m_shader = shader;
 	m_camera = camera;
 	m_model = model;
 	
 	//m_projection = glm::perspective(glm::radians(45.0f), (float)m_width / m_height, 0.1f, 100.0f);
-	m_projection = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, -2.0f, 2.0f);
+	m_projection = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f);
 	setClearColor(1.0,1.0,1.0);
 	//setClearColor(0.0,0.0,0.0);
+
+	//glEnable(GL_DEPTH_TEST);
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void Renderer::processFrame() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glEnable(GL_DEPTH_TEST);
-
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 	glClearColor(clearColor.r, clearColor.g, clearColor.b, 1.0);
 
 	m_shader->useProgram();
