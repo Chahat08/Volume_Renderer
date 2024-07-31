@@ -8,7 +8,7 @@ Model::Model(const std::string& dataPath) :m_dataPath(dataPath){
 	deltaTime = 1.0f;
 	m_modelMatrix = glm::mat4(1.0f);
 	m_rotateSpeed = 0.0005f;
-	m_filePrefix = "CTHead.";
+	m_filePrefix = "/CTHead.";
 	m_numSlices = 113;
 
 	setupBuffers();
@@ -35,7 +35,7 @@ void Model::initializeTextures() {
 	glGenTextures(m_numSlices, m_textureIds.data());
 
 	for (int i = 0; i < m_numSlices; ++i) {
-		std::string file = m_dataPath + m_filePrefix + std::to_string(i);
+		std::string file = m_dataPath + m_filePrefix + std::to_string(i+1);
 		unsigned char* data = readTextureSlice(file, STANFORD, 256, 256);
 
 		glBindTexture(GL_TEXTURE_2D, m_textureIds[i]);
@@ -53,9 +53,9 @@ void Model::initializeTextures() {
 }
 
 void Model::generateVertexData() {
-	float zMin = -1.0, zMax = 1.0;
+	float zMin = -0.5, zMax = 0.5;
 
-	float zStep = (zMax - zMin) / (m_numSlices - 1);
+	float zStep = m_numSlices>1 ? (zMax - zMin) / (m_numSlices - 1) : 0;
 
 	for (int i = 0; i < m_numSlices; ++i) {
 		float zPos = zMin + i * zStep;
@@ -93,7 +93,7 @@ void Model::setupBuffers() {
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(6 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(2);
 
-	glBindVertexArray(0);
+	//glBindVertexArray(0);
 }
 
 void Model::rotate(const glm::vec3& axis, float angle) {

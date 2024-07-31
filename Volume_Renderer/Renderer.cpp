@@ -10,11 +10,15 @@ Renderer::Renderer(Shader* shader, Camera* camera, Model* model){
 	//m_projection = glm::perspective(glm::radians(45.0f), (float)m_width / m_height, 0.1f, 100.0f);
 	m_projection = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, -2.0f, 2.0f);
 	setClearColor(1.0,1.0,1.0);
+	//setClearColor(0.0,0.0,0.0);
 }
 
 void Renderer::processFrame() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glClearColor(clearColor.r, clearColor.g, clearColor.b, 1.0);
 

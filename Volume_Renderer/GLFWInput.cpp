@@ -68,9 +68,6 @@ void GLFWInput::processInput() {
 			glm::vec3 rotationAxis = glm::normalize(glm::vec3(cursorMovementDir.y, -cursorMovementDir.x, 0.0f));
 			float angle = rotationAngleOffset;
 			m_model->rotate(rotationAxis, angle);
-
-			//m_init_xpos = m_cursor_xpos;
-			//m_init_ypos = m_cursor_ypos;
 		}
 	}
 
