@@ -15,8 +15,8 @@ Renderer::Renderer(Shader* shader, Camera* camera, Model* model){
 	
 	//m_projection = glm::perspective(glm::radians(45.0f), (float)m_width / m_height, 0.1f, 100.0f);
 	m_projection = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f);
-	setClearColor(1.0,1.0,1.0);
-	//setClearColor(0.0,0.0,0.0);
+	//setClearColor(1.0,1.0,1.0);
+	setClearColor(0.0,0.0,0.0);
 
 	//glEnable(GL_DEPTH_TEST);
 

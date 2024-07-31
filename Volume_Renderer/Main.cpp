@@ -13,7 +13,7 @@ int main(int argc, char* argv[]) {
 		// default arguments
 		windowWidth = 800;
 		windowHeight = 800;
-		dataPath = "data/CTHead";
+		dataPath = "data/MRBrain";
 		isStereo = false;
 		vertexShaderPath = "shaders/VertexShaderSource.vert";
 		fragmentShaderPath = "shaders/FragmentShaderSource.frag";

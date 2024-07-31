@@ -8,8 +8,8 @@ Model::Model(const std::string& dataPath) :m_dataPath(dataPath){
 	deltaTime = 1.0f;
 	m_modelMatrix = glm::mat4(1.0f);
 	m_rotateSpeed = 0.0005f;
-	m_filePrefix = "/CTHead.";
-	m_numSlices = 113;
+	m_filePrefix = "/MRBrain.";
+	m_numSlices = 109;
 
 	setupBuffers();
 }
