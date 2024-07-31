@@ -12,7 +12,7 @@ int main(int argc, char* argv[]) {
 	if (argc < 7) {
 		// default arguments
 		windowWidth = 800;
-		windowHeight = 600;
+		windowHeight = 800;
 		dataPath = "data/CTHead";
 		isStereo = false;
 		vertexShaderPath = "shaders/VertexShaderSource.vert";

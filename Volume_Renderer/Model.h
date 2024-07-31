@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <string>
+#include <vector>
 
 class Model {
 public:
@@ -16,16 +17,28 @@ public:
 	glm::mat4 getModelMatrix();
 	GLuint getVertexArray();
 	int getNumTriangles();
+	std::vector<GLuint> getTextureIds();
+
+	enum VolumeDataFormat {
+		STANFORD
+	};
+
 private:
 	float m_rotateSpeed;
 
 	glm::mat4 m_modelMatrix;
-	std::string m_dataPath;
 
-	GLfloat m_vertexData[36];
+	std::string m_dataPath;
+	std::string m_filePrefix;
+	int m_numSlices;
+	std::vector<GLuint> m_textureIds;
+
+	std::vector<GLfloat> m_vertexData;
 	GLuint m_vbo, m_vao;
 	int m_numTriangles;
 
-	void readTextures();
-	void vertexDataSetup();
+	unsigned char* readTextureSlice(const std::string& filename, VolumeDataFormat fileFormat = STANFORD, int width = 256, int height = 256);
+	void initializeTextures();
+	void generateVertexData();
+	void setupBuffers();
 };
