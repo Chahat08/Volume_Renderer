@@ -17,7 +17,6 @@ public:
 	glm::mat4 getModelMatrix();
 	GLuint getVertexArray();
 	int getNumTriangles();
-	std::vector<GLuint> getTextureIds();
 	GLuint get3DTexture();
 
 	enum VolumeDataFormat {
@@ -32,7 +31,6 @@ private:
 	std::string m_dataPath;
 	std::string m_filePrefix;
 	int m_numSlices;
-	std::vector<GLuint> m_textureIds;
 	GLuint m_texture3D;
 
 	std::vector<GLfloat> m_vertexData;
@@ -41,7 +39,6 @@ private:
 
 	unsigned char* readTextureSlice(const std::string& filename, VolumeDataFormat fileFormat = STANFORD, int width = 256, int height = 256);
 	void initialize3DTexture();
-	void initializeTextures();
 	void generateVertexData();
 	void setupBuffers();
 };

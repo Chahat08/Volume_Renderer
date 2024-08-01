@@ -17,17 +17,22 @@ Model::Model(const std::string& dataPath) :m_dataPath(dataPath){
 unsigned char* Model::readTextureSlice(const std::string& filename, VolumeDataFormat fileFormat, int width, int height) {
 	std::ifstream file(filename, std::ios::binary);
 
-	std::vector<int16_t> slice(width * height);
-	file.read(reinterpret_cast<char*>(slice.data()), slice.size() * sizeof(int16_t));
+	if (fileFormat == STANFORD) {
 
-	unsigned char* sliceConverted = new unsigned char[width * height];
-	for (size_t i = 0; i < slice.size(); ++i) {
-		uint16_t temp = static_cast<uint16_t>(slice[i]);
-		temp = (temp >> 8) | (temp << 8); // Convert to host byte order
-		sliceConverted[i] = static_cast<unsigned char>(temp / 256); // Scale down to 8-bit
+		std::vector<int16_t> slice(width * height);
+		file.read(reinterpret_cast<char*>(slice.data()), slice.size() * sizeof(int16_t));
+
+		unsigned char* sliceConverted = new unsigned char[width * height];
+		for (size_t i = 0; i < slice.size(); ++i) {
+			uint16_t temp = static_cast<uint16_t>(slice[i]);
+			temp = (temp >> 8) | (temp << 8); // Convert to host byte order
+			sliceConverted[i] = static_cast<unsigned char>(temp / 256); // Scale down to 8-bit
+		}
+
+		return sliceConverted;
 	}
 
-	return sliceConverted;
+	return nullptr;
 }
 
 void Model::initialize3DTexture() {
@@ -60,27 +65,6 @@ void Model::initialize3DTexture() {
 	glBindTexture(GL_TEXTURE_3D, 0);
 
 	delete[] volumeData;
-}
-
-void Model::initializeTextures() {
-	m_textureIds.resize(m_numSlices);
-	glGenTextures(m_numSlices, m_textureIds.data());
-
-	for (int i = 0; i < m_numSlices; ++i) {
-		std::string file = m_dataPath + m_filePrefix + std::to_string(i+1);
-		unsigned char* data = readTextureSlice(file, STANFORD, 256, 256);
-
-		glBindTexture(GL_TEXTURE_2D, m_textureIds[i]);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, 256, 256, 0, GL_RED, GL_UNSIGNED_BYTE, data);
-
-		glBindTexture(GL_TEXTURE_2D, 0);
-		delete[] data; 
-	}
 }
 
 void Model::generateVertexData() {
@@ -147,10 +131,6 @@ GLuint Model::getVertexArray() {
 
 int Model::getNumTriangles() {
 	return m_numTriangles;
-}
-
-std::vector<GLuint> Model::getTextureIds() {
-	return m_textureIds;
 }
 
 GLuint Model::get3DTexture() {

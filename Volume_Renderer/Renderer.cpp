@@ -18,8 +18,6 @@ Renderer::Renderer(Shader* shader, Camera* camera, Model* model){
 	setClearColor(1.0,1.0,1.0);
 	//setClearColor(0.0,0.0,0.0);
 
-	//glEnable(GL_DEPTH_TEST);
-
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
@@ -37,13 +35,6 @@ void Renderer::processFrame() {
 	glBindTexture(GL_TEXTURE_3D, m_model->get3DTexture());
 
 	glDrawArrays(GL_TRIANGLES, 0, m_model->getNumTriangles() * 6);
-
-	/*for (int i = 0; i < m_model->getNumTriangles() / 2; ++i) {
-		glBindTexture(GL_TEXTURE_2D, m_model->getTextureIds()[i]);
-		glDrawArrays(GL_TRIANGLES, i * 8, 6);
-		glBindTexture(GL_TEXTURE_2D, 0);
-	}*/
-
 }
 
 void Renderer::setClearColor(float r, float g, float b) {
