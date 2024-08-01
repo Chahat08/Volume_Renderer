@@ -1,10 +1,10 @@
 #version 330 core
 layout(location=0) in vec3 vertexPosition;
 layout(location=1) in vec3 vertexColor;
-layout(location=2) in vec2 texCoords;
+layout(location=2) in vec3 texCoords;
 
 out vec3 vertColor;
-out vec2 textureCoords;
+out vec3 textureCoords;
 
 uniform mat4 projection, view, model;
 

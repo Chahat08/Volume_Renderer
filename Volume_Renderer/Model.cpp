@@ -30,6 +30,38 @@ unsigned char* Model::readTextureSlice(const std::string& filename, VolumeDataFo
 	return sliceConverted;
 }
 
+void Model::initialize3DTexture() {
+	int width = 256;
+	int height = 256;
+	int depth = m_numSlices;
+
+	unsigned char* volumeData = new unsigned char[width * height * depth];
+
+	for (int i = 0; i < m_numSlices; ++i) {
+		std::string file = m_dataPath + m_filePrefix + std::to_string(i + 1);
+		unsigned char* sliceData = readTextureSlice(file, STANFORD, 256, 256);
+
+		for (int j = 0; j < width * height; ++j)
+			volumeData[(i * width * height + j)] = sliceData[j];
+
+		delete[] sliceData;
+	}
+
+	glGenTextures(1, &m_texture3D);
+	glBindTexture(GL_TEXTURE_3D, m_texture3D);
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glTexImage3D(GL_TEXTURE_3D, 0, GL_RED, width, height, depth, 0, GL_RED, GL_UNSIGNED_BYTE, volumeData);
+
+	glBindTexture(GL_TEXTURE_3D, 0);
+
+	delete[] volumeData;
+}
+
 void Model::initializeTextures() {
 	m_textureIds.resize(m_numSlices);
 	glGenTextures(m_numSlices, m_textureIds.data());
@@ -58,21 +90,23 @@ void Model::generateVertexData() {
 
 	for (int i = 0; i < m_numSlices; ++i) {
 		float zPos = zMin + i * zStep;
-		m_vertexData.insert(m_vertexData.end(), {
-			-0.5f,  0.5f, zPos,  1.0f, 0.0f, 0.0f,  0.0f, 1.0f,
-			 0.5f,  0.5f, zPos,  0.0f, 1.0f, 0.0f,  1.0f, 1.0f,
-			-0.5f, -0.5f, zPos,  0.0f, 0.0f, 1.0f,  0.0f, 0.0f,
+		float texCoordZ = (float)i / (m_numSlices - 1);
 
-			-0.5f, -0.5f, zPos,  0.0f, 0.0f, 1.0f,  0.0f, 0.0f,
-			 0.5f, -0.5f, zPos,  0.0f, 0.0f, 1.0f,  1.0f, 0.0f,
-			 0.5f,  0.5f, zPos,  0.0f, 1.0f, 0.0f,  1.0f, 1.0f
+		m_vertexData.insert(m_vertexData.end(), {
+			-0.5f,  0.5f, zPos,  1.0f, 0.0f, 0.0f,  0.0f, 1.0f, texCoordZ,
+			 0.5f,  0.5f, zPos,  0.0f, 1.0f, 0.0f,  1.0f, 1.0f, texCoordZ,
+			-0.5f, -0.5f, zPos,  0.0f, 0.0f, 1.0f,  0.0f, 0.0f, texCoordZ,
+			  
+			-0.5f, -0.5f, zPos,  0.0f, 0.0f, 1.0f,  0.0f, 0.0f, texCoordZ,
+			 0.5f, -0.5f, zPos,  0.0f, 0.0f, 1.0f,  1.0f, 0.0f, texCoordZ,
+			 0.5f,  0.5f, zPos,  0.0f, 1.0f, 0.0f,  1.0f, 1.0f, texCoordZ
 		});
 	}
 }
 
 
 void Model::setupBuffers() {
-	initializeTextures();
+	initialize3DTexture();
 	generateVertexData();
 
 	m_numTriangles = m_numSlices * 2;
@@ -85,11 +119,11 @@ void Model::setupBuffers() {
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 	glBufferData(GL_ARRAY_BUFFER, m_vertexData.size()*sizeof(GLfloat), m_vertexData.data(), GL_DYNAMIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (void*)0);
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(6 * sizeof(GLfloat)));
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (void*)(6 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(2);
 
 	//glBindVertexArray(0);
@@ -117,4 +151,8 @@ int Model::getNumTriangles() {
 
 std::vector<GLuint> Model::getTextureIds() {
 	return m_textureIds;
+}
+
+GLuint Model::get3DTexture() {
+	return m_texture3D;
 }

@@ -18,6 +18,7 @@ public:
 	GLuint getVertexArray();
 	int getNumTriangles();
 	std::vector<GLuint> getTextureIds();
+	GLuint get3DTexture();
 
 	enum VolumeDataFormat {
 		STANFORD
@@ -32,12 +33,14 @@ private:
 	std::string m_filePrefix;
 	int m_numSlices;
 	std::vector<GLuint> m_textureIds;
+	GLuint m_texture3D;
 
 	std::vector<GLfloat> m_vertexData;
 	GLuint m_vbo, m_vao;
 	int m_numTriangles;
 
 	unsigned char* readTextureSlice(const std::string& filename, VolumeDataFormat fileFormat = STANFORD, int width = 256, int height = 256);
+	void initialize3DTexture();
 	void initializeTextures();
 	void generateVertexData();
 	void setupBuffers();

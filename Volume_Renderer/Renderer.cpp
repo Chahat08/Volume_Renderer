@@ -34,11 +34,15 @@ void Renderer::processFrame() {
 	m_shader->setUniform("model", m_model->getModelMatrix());
 
 	glBindVertexArray(m_model->getVertexArray());
-	for (int i = 0; i < m_model->getNumTriangles() / 2; ++i) {
+	glBindTexture(GL_TEXTURE_3D, m_model->get3DTexture());
+
+	glDrawArrays(GL_TRIANGLES, 0, m_model->getNumTriangles() * 6);
+
+	/*for (int i = 0; i < m_model->getNumTriangles() / 2; ++i) {
 		glBindTexture(GL_TEXTURE_2D, m_model->getTextureIds()[i]);
 		glDrawArrays(GL_TRIANGLES, i * 8, 6);
 		glBindTexture(GL_TEXTURE_2D, 0);
-	}
+	}*/
 
 }
 
