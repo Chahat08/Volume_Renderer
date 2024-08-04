@@ -74,16 +74,28 @@ void Model::generateVertexData() {
 
 	for (int i = 0; i < m_numSlices; ++i) {
 		float zPos = zMin + i * zStep;
-		float texCoordZ = (float)i / (m_numSlices - 1);
+		float texCoordZ_back = (float)i / (m_numSlices - 1);
+		float texCoordZ_front = (float)(i+1) / (m_numSlices - 1);
 
 		m_vertexData.insert(m_vertexData.end(), {
-			-0.5f,  0.5f, zPos,  1.0f, 0.0f, 0.0f,  0.0f, 1.0f, texCoordZ,
-			 0.5f,  0.5f, zPos,  0.0f, 1.0f, 0.0f,  1.0f, 1.0f, texCoordZ,
-			-0.5f, -0.5f, zPos,  0.0f, 0.0f, 1.0f,  0.0f, 0.0f, texCoordZ,
+			// front face
+			-0.5f,  0.5f, zPos,  1.0f, 0.0f, 0.0f,  0.0f, 1.0f, texCoordZ_back,
+			 0.5f,  0.5f, zPos,  0.0f, 1.0f, 0.0f,  1.0f, 1.0f, texCoordZ_back,
+			-0.5f, -0.5f, zPos,  0.0f, 0.0f, 1.0f,  0.0f, 0.0f, texCoordZ_back,
 			  
-			-0.5f, -0.5f, zPos,  0.0f, 0.0f, 1.0f,  0.0f, 0.0f, texCoordZ,
-			 0.5f, -0.5f, zPos,  0.0f, 0.0f, 1.0f,  1.0f, 0.0f, texCoordZ,
-			 0.5f,  0.5f, zPos,  0.0f, 1.0f, 0.0f,  1.0f, 1.0f, texCoordZ
+			-0.5f, -0.5f, zPos,  0.0f, 0.0f, 1.0f,  0.0f, 0.0f, texCoordZ_back,
+			 0.5f, -0.5f, zPos,  0.0f, 0.0f, 1.0f,  1.0f, 0.0f, texCoordZ_back,
+			 0.5f,  0.5f, zPos,  0.0f, 1.0f, 0.0f,  1.0f, 1.0f, texCoordZ_back,
+
+			 // back face
+			-0.5f,  0.5f, zPos + zStep,  1.0f, 0.0f, 0.0f,  0.0f, 1.0f, texCoordZ_front,
+			 0.5f,  0.5f, zPos + zStep,  0.0f, 1.0f, 0.0f,  1.0f, 1.0f, texCoordZ_front,
+			-0.5f, -0.5f, zPos + zStep,  0.0f, 0.0f, 1.0f,  0.0f, 0.0f, texCoordZ_front,
+
+			-0.5f, -0.5f, zPos + zStep,  0.0f, 0.0f, 1.0f,  0.0f, 0.0f, texCoordZ_front,
+			 0.5f, -0.5f, zPos + zStep,  0.0f, 0.0f, 1.0f,  1.0f, 0.0f, texCoordZ_front,
+			 0.5f,  0.5f, zPos + zStep,  0.0f, 1.0f, 0.0f,  1.0f, 1.0f, texCoordZ_front,
+
 		});
 	}
 }

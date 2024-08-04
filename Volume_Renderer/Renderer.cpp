@@ -34,7 +34,7 @@ void Renderer::processFrame() {
 	glBindVertexArray(m_model->getVertexArray());
 	glBindTexture(GL_TEXTURE_3D, m_model->get3DTexture());
 
-	glDrawArrays(GL_TRIANGLES, 0, m_model->getNumTriangles() * 6);
+	glDrawArrays(GL_TRIANGLES, 0, m_model->getNumTriangles() * 36);
 }
 
 void Renderer::setClearColor(float r, float g, float b) {
